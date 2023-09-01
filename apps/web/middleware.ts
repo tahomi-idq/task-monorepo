@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { authCookieName } from "./constants";
+import {isAuthenticated} from "auth";
 
 export function middleware(request: NextRequest) {
 
@@ -8,9 +8,9 @@ export function middleware(request: NextRequest) {
         return NextResponse.next();
     }
 
-    // if(isAuthenticated(request)) {
-    //     return NextResponse.next();
-    // }
+    if(isAuthenticated(request)) {
+        return NextResponse.next();
+    }
 
     return NextResponse.redirect(new URL('/login', request.url));
 }
