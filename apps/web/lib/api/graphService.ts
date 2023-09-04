@@ -3,10 +3,10 @@ import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context';
 import { singPayload } from "../auth/auth";
 
-export const getServerClient = async function() {
+export const getServerClient = async function(hostname:string) {
     const httpLink = createHttpLink({
 
-        uri: 'http://localhost:3000/api/graphql',
+        uri: hostname + '/api/graphql',
       
     });
     

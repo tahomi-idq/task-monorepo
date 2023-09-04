@@ -7,9 +7,9 @@ export async function POST(request:Request) {
 
         let res = await request.json();
 
-        let {name, password, email} = res;
+        let {name, password, email} = res;        
 
-        let bdUser = await (await getServerClient()).mutate({ //TODO: add error handling
+        let bdUser = await (await getServerClient(new URL(request.url).origin)).mutate({ //TODO: add error handling
             mutation: REGISTER_MUTATION, 
             variables:{
                 "user": {

@@ -17,7 +17,7 @@ export async function GET(request:NextRequest) {
 
     let {email} = await verifyToken(token.value);    
 
-    let user = await (await getServerClient()).query({
+    let user = await (await getServerClient(new URL(request.url).origin)).query({
         query: GET_USER_QUERY,
         variables: {
             "email": email

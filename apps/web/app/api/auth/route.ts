@@ -8,10 +8,7 @@ export async function POST(request:Request) {
 
     try{
         let {email, password} = await request.json();
-
-        console.log(email);
-
-        let bdUser = await (await getServerClient()).query({ //TODO: add error handling
+        let bdUser = await (await getServerClient(new URL(request.url).origin)).query({ //TODO: add error handling
             query: GET_USER_WITH_PASS_QUERY, 
             variables:{
                 "email": email
