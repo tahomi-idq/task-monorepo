@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import User from "../entities/User";
+import User from "../entities/user";
 import bcrypt from "bcrypt"
 import { hashValue } from "../../config";
 
