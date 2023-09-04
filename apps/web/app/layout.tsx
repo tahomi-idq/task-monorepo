@@ -1,4 +1,5 @@
 import './globals.css'
+import "ui/styles.css";
 
 export default function RootLayout({
   children,
@@ -7,7 +8,12 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <head>
+        <title>Task</title>
+      </head>
+      <body>
+        {children}
+      </body>
     </html>
   );
 }

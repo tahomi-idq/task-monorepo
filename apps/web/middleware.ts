@@ -1,14 +1,27 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import {isAuthenticated} from "auth";
+import { isApiAuthenticated, isAuthenticated } from "./lib/auth/auth";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
+    if(request.nextUrl.pathname.startsWith('/api/graphql')){
+        if(await isApiAuthenticated(request)){
+            return NextResponse.next();
+        } else {
+            return new NextResponse(
+                JSON.stringify({ success: false, message: 'authentication failed' }),
+                { status: 401, headers: { 'content-type': 'application/json' } }
+              )
+        }
+    }
 
-    if(request.url.indexOf("/login") !== -1 ) {
+    if(request.nextUrl.pathname.startsWith('/login') 
+    || request.nextUrl.pathname.startsWith('/register')
+    || request.nextUrl.pathname.startsWith('/api/auth')
+    || request.nextUrl.pathname.startsWith('/api/register')) {
         return NextResponse.next();
     }
 
-    if(isAuthenticated(request)) {
+    if(await isAuthenticated(request)) {
         return NextResponse.next();
     }
 
@@ -19,11 +32,10 @@ export const config = {
     matcher: [
         /*
          * Match all request paths except for the ones starting with:
-         * - api (API routes)
          * - _next/static (static files)
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
          */
-        '/((?!api|_next/static|_next/image|favicon.ico).*)',
+        '/((?!_next/static|_next/image|favicon.ico).*)',
       ],
 }
