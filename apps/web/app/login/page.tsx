@@ -9,15 +9,18 @@ export default function Page(): JSX.Element {
     const [emailValue, setEmailValue] = useState("");
     const [passValue, setPassValue] = useState("");
     const [processing, setProcessing] = useState(false);
+    const [error, setError] = useState("");
 
     const router = useRouter()
 
     const emailChange = (event)=>{
         setEmailValue(event.target.value)
+        setError("")
     }
 
     const passChange = (event)=>{
         setPassValue(event.target.value)
+        setError("")
     }
 
     const handleSubmit = async function(event) {
@@ -39,8 +42,9 @@ export default function Page(): JSX.Element {
             
             router.push("/")
         } else {
-            console.log("error status: " + response.status);
-            
+            response.json().then(res=>{
+                setError(JSON.stringify(res))
+            })
         }
     }
 
@@ -49,7 +53,7 @@ export default function Page(): JSX.Element {
     }
 
     return <>
-    <form onSubmit={handleSubmit} className="flex flex-col justify-center">
+    <form className="flex flex-col justify-center">
                 <Input 
                     labelText="Email"
                     type="email"
@@ -66,8 +70,14 @@ export default function Page(): JSX.Element {
                     value={passValue}
                     onChange={passChange}
                 />
-                <Button onClick={handleSubmit}type={"submit"}>Login</Button>
+                <Button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" 
+                onClick={handleSubmit}
+                clearStyles={true}
+                >Login</Button>
         </form>
-        <Button><Link href="../register">Register</Link></Button>
+        {error!==""?<div className="p-4 text-red-500 my-4 border-l-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800">
+            {error}
+        </div> :null}
+        <Button className="mx-0 block"><Link href="../register">Register</Link></Button>
     </>
 }

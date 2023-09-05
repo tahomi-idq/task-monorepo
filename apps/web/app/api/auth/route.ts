@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { GET_USER_WITH_PASS_QUERY, getServerClient } from "../../../lib/api/graphService";
 import { authCookieName } from "../../../config";
 import { singPayload } from "../../../lib/auth/auth";
-import { compare, compareSync } from "bcrypt";
+import { compareSync } from "bcrypt";
 
 export async function POST(request:Request) {
 
